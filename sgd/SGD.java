@@ -31,13 +31,13 @@ public class SGD {
             //Evaluate loss function at t(th) weight and fresh example
             double loss = logistic_loss(w[t], samples[t]);
             //Gradient of the loss is difference between true label and loss
-            //This assumes that true label lies at 3 entry in each row of sample
-            double grad_loss = loss - samples[t][2];
+            //This assumes that true label lies at 1st entry in each row of sample
+            double grad_loss = loss - samples[t][0];
             
             //Update Step
-            double value = update(w[t], loss, l_rate);
+            double[] value = update(w[t], loss, l_rate);
             //Projection Step
-            w[t+1] = project(value);
+            w[t+1] = project(value, w);
         }
         //Return Empirical Loss
         double w_hat = 0;
@@ -48,12 +48,18 @@ public class SGD {
         
     }
     //Loss Update
-    public static double update(double w_t, double err, double l_rate) {
+    public static double update(double[] w_t, double err, double l_rate) {
         return w_t-(l_rate*err);
     }
     //TODO: Finish Projection Function
     //Euclidean Projection
-    public static double project(double v) {
+    public static double project(double v, double[] w) {
+        double min = v - w[0];
+        for (int t = 1; t < samples.length; t++) {
+            if (v - w[t] < min) {
+                min = v - w[t];
+            }
+        }
         return v;
     }
     //Logistic Loss Function
