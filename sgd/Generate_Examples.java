@@ -25,8 +25,8 @@ public class Generate_Examples {
 	 * @return
 	 * 		true if the point lies within the hypersphere
 	 */
-	private static boolean isHyperSphere(double[] u, double radius) {
-		boolean isSphere;
+	private static double hyperSphereMagnitude(double[] u, double radius) {
+		double magnitude;
 		
 		double squaredRadius = 0;
 		
@@ -38,9 +38,9 @@ public class Generate_Examples {
 		
 		// Get the "radius" to the point and compare it to the actual radius.
 		// i.e. r = sqrt(a^2 + b^2 + ...)
-		isSphere = Math.sqrt(squaredRadius) <= radius;
+		magnitude = Math.sqrt(squaredRadius);
 		
-		return isSphere;
+		return magnitude;
 	}
 	
 	/**
@@ -70,6 +70,33 @@ public class Generate_Examples {
 		}
 		
 		return isCube;
+	}
+	
+	public static double[] project(double[] v, double radius, int scenario) {
+		// Scenario for the hypercube.
+		if (scenario == 1) {
+		    // Check if within the hypercube.
+		    if (!isHyperCube(v)) {
+			for(int i = 0; i < v.length; i++) {
+			    if(v[i] > radius) {
+				double step = v[i] - radius;
+				v[i] = v[i] - step;
+			    } else if(v[i] < -radius) {
+				double step = v[i] + radius;
+				v[i] = v[i] - step;
+			    }
+			}
+		    }
+		} else if (scenario == 2) {     // Otherwise, scenario for the hypersphere.
+		    double magnitude = hyperSphereMagnitude(v);
+		    // Check if within the hypersphere.
+		    if (magnitude > radius) {
+			for (int i = 0; i < v.length; i++) {
+			    v[i] = v[i] / magnitude;
+			}
+		    }
+		}
+		return v;
 	}
 	
 	/**
@@ -191,18 +218,9 @@ public class Generate_Examples {
 				u = getNormalDistribution(dimensions, mean, variance);
 				
 				// Ensure that the vector's values lie within the specified domain.
-				switch (scenario) {
-				case 1:
-					while (!isHyperCube(u, radius)) {
-						u = getNormalDistribution(dimensions, mean, variance);
-					}
-					break;
-				case 2:
-					while (!isHyperSphere(u, radius)) {
-						u = getNormalDistribution(dimensions, mean, variance);
-					}
-					break;
-				default:
+				if (scenario == 1 || scenario == 2) {
+					u = project(u, radius, scenario);
+				} else {
 					System.err.println("There are only two scenarios: 1 and 2");
 					System.exit(0);
 					break;
