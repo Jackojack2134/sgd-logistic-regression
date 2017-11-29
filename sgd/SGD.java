@@ -197,9 +197,18 @@ public class SGD {
         try {
             br = new BufferedReader(new FileReader(fileName));
             
-            String currentLine;
-            while ((currentLine = br.readline()) != null) {
-                
+            String currentLine = br.readline();
+            int i = 0;
+            double[][] samples = new double[numSamples][dim];
+            while (currentLine != null) {
+                while (i < numSamples) {
+                    String[] strArr = currentLine.split("\\s+");
+                    for (int j = 0; j < strArr.length; j++) {
+                        samples[i][j] = Double.parseDouble(strArr[j]);
+                    }
+                    i++;
+                    currentLine = br.readline();
+                }
             }
         } catch (IOException e) {
             System.err.println("Error reading from: " + fileName);
