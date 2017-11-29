@@ -1,6 +1,6 @@
 import java.lang.Math;
 import java.io.BufferedReader;
-import java.io.FileREader;
+import java.io.FileReader;
 import java.io.IOException;
 /**
     @author Greg Sop, Jacob Loeser
@@ -164,7 +164,7 @@ public class SGD {
         for (int i = 1; i < data.length; i++) {
             data_hat[i - 1] = data[i];
         }
-        data_hat[weight.length - 1] = 1;
+        data_hat[weights.length - 1] = 1;
         //Return value of logistic loss function
         return Math.log(1+Math.exp(-label * dot(data_hat, weights)));
     }
