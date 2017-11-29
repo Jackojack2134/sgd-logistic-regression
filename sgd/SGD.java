@@ -205,7 +205,9 @@ public class SGD {
                     String[] strArr = currentLine.split("\\s+");
                     for (int j = 0; j < strArr.length; j++) {
                         samples[i][j] = Double.parseDouble(strArr[j]);
+						System.out.print(samples[i][j] + " ");
                     }
+					System.out.println();
                     i++;
                     currentLine = br.readline();
                 }
