@@ -87,7 +87,7 @@ public class SGD {
             w_hat[i] = 0;
         }
         //Start training in epochs
-        for(int t = 0; t < epochs; t++) {
+        for(int t = 1; t < epochs; t++) {
             //Have G-Oracle Produce Random Vector =>
             //Draw an example from samples and calculate gradient of logistic loss
             
@@ -101,7 +101,7 @@ public class SGD {
             //Update Step
             double value = update(grad_loss, l_rate);
             //Projection Step
-            w[t+1] = project(w[t], value, scenario);
+            w[t] = project(w[t-1], value, scenario);
         }
         //Return Empirical Loss
         for (int i = 0; i < dim; i++) {
