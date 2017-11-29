@@ -89,10 +89,11 @@ public class SGD {
             //Draw an example from samples and calculate gradient of logistic loss
             
             //Evaluate loss function at t(th) weight and fresh example
-            double loss = logistic_loss(samples[t][0], w[t], samples[t]);
+            int label = (int) samples[t][0];
+	    double loss = logistic_loss(label, w[t], samples[t]);
             //Gradient of the loss is difference between true label and loss
             //This assumes that true label lies at 1st entry in each row of sample
-            double grad_loss = loss - samples[t][0];
+            double grad_loss = loss - label;
             
             //Update Step
             double value = update(grad_loss, l_rate);
