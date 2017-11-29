@@ -34,6 +34,44 @@ public class SGD {
 		
 		return magnitude;
 	}
+    private static double[] testing(double[] w, double[][] sample) {
+        //Run weights on each example in sample
+        double[] results = new double[2];
+        double[] losses = new double[sample.length];
+        double[] data = new double[w.length];
+        int correct = 0;
+        losses[0] = logistic_loss(sample[0][0], w, sample[0]);
+        double min = losses[0];
+        for(int i = 1; i < sample.length; i++) {
+            losses[i] = logistic_loss(sample[i][0], w, sample[i]);
+            if(losses[i] < min) {
+                min = losses[i];
+            }
+            for(int j = 0; j < data.length; j++) {
+                data[j] = sample[i][j+1];
+            }
+            data[w.length - 1] = 1;
+            if(sample[i][0]*dot(w,data) > 0) {
+                correct++:
+            }
+        }
+        double mean = 0;
+        for (int i = 0; i < losses.length; i++) {
+            mean += losses[i];
+        }
+        mean /= losses.length;
+        result[0] = mean;
+        
+//         double stdDev = 0;
+//         for (int i = 0; i < losses.length; i++) {
+//             stdDev += Math.pow(losses[i] - mean, 2);
+//         }
+//         stdDev /= losses.length - 1;
+//         stdDev = Math.sqrt(stdDev);
+         double c_error = 1.0 - (1.0 * correct / sample.length);
+        results[1] = c_error;
+        return results;
+    }
     
     /**
 	 * Determines if the vector of coordinates, @code(u), is within the hypercube of
@@ -193,47 +231,75 @@ public class SGD {
         }
         
         String fileName = args[0];
-	    numSamples = Integer.parseInt(args[1]);
-        scenario = Integer.parseInt(args[2]);
+        String testFileName = args[1];
+	    numSamples = Integer.parseInt(args[2]);
+        scenario = Integer.parseInt(args[3]);
         BufferedReader br = null;
         FileReader fr = null;
+        double[][] results = new double[30][2];
+        double[400][dim];
         
         try {
-            br = new BufferedReader(new FileReader(fileName));
-            
+            br = new BufferedReader(newFileReader(testFileName));
             String currentLine = br.readLine();
-            int i;
-            double[][] samples = new double[numSamples][dim];
             while (currentLine != null) {
-		        i = 0;
-                while (i < numSamples) {
-                    String[] strArr = currentLine.split("\\s+");
-                    for (int j = 0; j < strArr.length; j++) {
-                        samples[i][j] = Double.parseDouble(strArr[j]);
-                    }
-                    i++;
-                    currentLine = br.readLine();
-                }
-                double[] results = SGD(samples, numSamples, l_rate, dim, scenario);
-		for (int j = 0; j < results.length; j++) {
-			System.out.print(results[j] + " ");
-		}
-		    System.out.println();
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading from: " + fileName);
-        } finally {
-            try {
-                if (br != null) {
-                    br.close();
-                }
                 
-                if (fr != null) {
-                    fr.close();
-                }
-            } catch (IOException ex) {
-                System.err.println("Error while closing file.");
             }
-        }
+        catch (IOException e) {
+            System.err.println("Error reading from " + testFileName);
+            System.exit(0);
+        finally {
+            try {
+                    if (br != null) {
+                        br.close();
+                    }
+
+                    if (fr != null) {
+                        fr.close();
+                    }
+                } catch (IOException ex) {
+                    System.err.println("Error while closing file.");
+                }
+            
+            try {
+                br = new BufferedReader(new FileReader(fileName));
+
+                String currentLine = br.readLine();
+                int i, testNum;
+                testNum = 0;
+                double[][] samples = new double[numSamples][dim];
+                while (currentLine != null) {
+                    i = 0;
+                    while (i < numSamples) {
+                        String[] strArr = currentLine.split("\\s+");
+                        for (int j = 0; j < strArr.length; j++) {
+                            samples[i][j] = Double.parseDouble(strArr[j]);
+                        }
+                        i++;
+                        currentLine = br.readLine();
+                    }
+                    double[] sgdResult = SGD(samples, numSamples, l_rate, dim, scenario);
+                    double[] testResult = testing(sgdResult, testData); 
+                    for (int j = 0; j < testResult.length; j++) {
+                        results[testNum] = testResult;
+                    }
+                }
+            } catch (IOException e) {
+                System.err.println("Error reading from: " + fileName);
+            } finally {
+                try {
+                    if (br != null) {
+                        br.close();
+                    }
+
+                    if (fr != null) {
+                        fr.close();
+                    }
+                } catch (IOException ex) {
+                    System.err.println("Error while closing file.");
+                }
+            }
+        
+        
     }
 }
