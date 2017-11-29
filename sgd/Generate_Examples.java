@@ -233,10 +233,6 @@ public class Generate_Examples {
 				}
 				outFile.println(u[u.length - 1]);
 			}
-			// If not the last example set, divide each set with a unique phrase.
-			if (i != repeatNum - 1) {
-				outFile.println("end_example");
-			}
 		}
 		
 		// Close output and input streams.
