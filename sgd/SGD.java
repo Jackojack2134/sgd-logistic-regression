@@ -71,7 +71,7 @@ public class SGD {
         Source: https://stats.stackexchange.com/questions/219241/gradient-for-logistic-loss-function
         
     */
-    public static double SGD(double[][] samples, int epochs, double l_rate, int dim, int scenario) {
+    public static double[] SGD(double[][] samples, int epochs, double l_rate, int dim, int scenario) {
         //Initialize weight vector
         double[][] w = new double[epochs][dim];
         double[] w_hat = new double[dim];
@@ -89,7 +89,7 @@ public class SGD {
             //Draw an example from samples and calculate gradient of logistic loss
             
             //Evaluate loss function at t(th) weight and fresh example
-            double loss = logistic_loss(w[t], samples[t]);
+            double loss = logistic_loss(samples[t][0], w[t], samples[t]);
             //Gradient of the loss is difference between true label and loss
             //This assumes that true label lies at 1st entry in each row of sample
             double grad_loss = loss - samples[t][0];
