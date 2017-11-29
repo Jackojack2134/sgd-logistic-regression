@@ -199,9 +199,10 @@ public class SGD {
             br = new BufferedReader(new FileReader(fileName));
             
             String currentLine = br.readLine();
-            int i = 0;
+            int i;
             double[][] samples = new double[numSamples][dim];
             while (currentLine != null) {
+		i = 0;
                 while (i < numSamples) {
                     String[] strArr = currentLine.split("\\s+");
                     for (int j = 0; j < strArr.length; j++) {
