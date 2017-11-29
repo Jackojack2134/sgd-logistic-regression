@@ -185,19 +185,20 @@ public class SGD {
         int dim = 6;
         int numSamples;
         
-        if (args.length != 1) {
-            System.err.println("Incorrect number of arguments. Enter the filename as an argument.");
+        if (args.length != 2) {
+            System.err.println("Incorrect number of arguments. Enter the filename and number of samples.");
             System.exit(0);
         }
         
         String fileName = args[0];
+	numSamples = Integer.parseInt(args[1]);
         BufferedReader br = null;
         FileReader fr = null;
         
         try {
             br = new BufferedReader(new FileReader(fileName));
             
-            String currentLine = br.readline();
+            String currentLine = br.readLine();
             int i = 0;
             double[][] samples = new double[numSamples][dim];
             while (currentLine != null) {
@@ -209,7 +210,7 @@ public class SGD {
                     }
 					System.out.println();
                     i++;
-                    currentLine = br.readline();
+                    currentLine = br.readLine();
                 }
             }
         } catch (IOException e) {
