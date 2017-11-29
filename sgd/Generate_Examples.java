@@ -127,7 +127,7 @@ public class Generate_Examples {
 		// The output file. Try to create/open it and exit on failure.
 		PrintWriter outFile = null;
 		try {
-			outFile = new PrintWriter("sdg_examples.txt", "UTF-8");
+			outFile = new PrintWriter("examples.txt", "UTF-8");
 		} catch (FileNotFoundException e) {
 			System.err.println("Output file does not exist and could not be created.");
 			System.exit(0);
