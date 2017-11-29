@@ -214,7 +214,11 @@ public class SGD {
                     i++;
                     currentLine = br.readLine();
                 }
-                SGD(samples, numSamples, l_rate, dim, scenario);
+                double[] results = SGD(samples, numSamples, l_rate, dim, scenario);
+		for (int j = 0; j < results.length; j++) {
+			System.out.print(results[j] + " ");
+		}
+		    System.out.println();
             }
         } catch (IOException e) {
             System.err.println("Error reading from: " + fileName);
