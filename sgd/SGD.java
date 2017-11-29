@@ -133,7 +133,7 @@ public class SGD {
                         w[i] = v[i] - step;
                     } else if(v[i] < -1) {
                         double step = v[i] + 1;
-                        w[i] v[i] - step;
+                        w[i] = v[i] - step;
                     }
                 }
             } else {
