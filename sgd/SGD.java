@@ -1,4 +1,7 @@
 import java.lang.Math;
+import java.io.BufferedReader;
+import java.io.FileREader;
+import java.io.IOException;
 /**
     @author Greg Sop, Jacob Loeser
     SGD class instantiates stochastic gradient descent algorithm
@@ -90,7 +93,7 @@ public class SGD {
             
             //Evaluate loss function at t(th) weight and fresh example
             int label = (int) samples[t][0];
-	    double loss = logistic_loss(label, w[t], samples[t]);
+	        double loss = logistic_loss(label, w[t], samples[t]);
             //Gradient of the loss is difference between true label and loss
             //This assumes that true label lies at 1st entry in each row of sample
             double grad_loss = loss - label;
@@ -157,7 +160,11 @@ public class SGD {
     //Logistic Loss Function
     public static double logistic_loss(int label, double[] weights, double[] data) {
         //Construct x_hat from the specifications
-        double[] data_hat = data;
+        double[] data_hat = new double[weights.length];
+        for (int i = 1; i < data.length; i++) {
+            data_hat[i - 1] = data[i];
+        }
+        data_hat[weight.length - 1] = 1;
         //Return value of logistic loss function
         return Math.log(1+Math.exp(-label * dot(data_hat, weights)));
     }
@@ -175,6 +182,39 @@ public class SGD {
     public static void main(String[] args) {
         //Do file I/O to get Sample Data
         // Dim-size is 6.
+        int dim = 6;
+        int numSamples;
+        
+        if (args.length != 1) {
+            System.err.println("Incorrect number of arguments. Enter the filename as an argument.");
+            System.exit(0);
+        }
+        
+        String fileName = args[0];
+        BufferedReader br = null;
+        FileReader fr = null;
+        
+        try {
+            br = new BufferedReader(new FileReader(fileName));
+            
+            String currentLine;
+            while ((currentLine = br.readline()) != null) {
+                
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading from: " + fileName);
+        } finally {
+            try {
+                if (br != null) {
+                    br.close();
+                }
+                
+                if (fr != null) {
+                    fr.close();
+                }
+            } catch (IOException ex) {
+                System.err.println("Error while closing file.");
+            }
+        }
     }
-
 }
