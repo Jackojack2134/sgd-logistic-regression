@@ -184,14 +184,17 @@ public class SGD {
         // Dim-size is 6.
         int dim = 6;
         int numSamples;
+        int scenario;
+        double l_rate = 0.02;
         
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.err.println("Incorrect number of arguments. Enter the filename and number of samples.");
             System.exit(0);
         }
         
         String fileName = args[0];
-	numSamples = Integer.parseInt(args[1]);
+	    numSamples = Integer.parseInt(args[1]);
+        scenario = Integer.parseInt(args[2]);
         BufferedReader br = null;
         FileReader fr = null;
         
@@ -202,17 +205,16 @@ public class SGD {
             int i;
             double[][] samples = new double[numSamples][dim];
             while (currentLine != null) {
-		i = 0;
+		        i = 0;
                 while (i < numSamples) {
                     String[] strArr = currentLine.split("\\s+");
                     for (int j = 0; j < strArr.length; j++) {
                         samples[i][j] = Double.parseDouble(strArr[j]);
-						System.out.print(samples[i][j] + " ");
                     }
-					System.out.println();
                     i++;
                     currentLine = br.readLine();
                 }
+                SGD(samples, numSamples, l_rate, dim, scenario);
             }
         } catch (IOException e) {
             System.err.println("Error reading from: " + fileName);
