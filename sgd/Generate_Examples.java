@@ -76,7 +76,7 @@ public class Generate_Examples {
 		// Scenario for the hypercube.
 		if (scenario == 1) {
 		    // Check if within the hypercube.
-		    if (!isHyperCube(v)) {
+		    if (!isHyperCube(v, radius)) {
 			for(int i = 0; i < v.length; i++) {
 			    if(v[i] > radius) {
 				double step = v[i] - radius;
@@ -88,7 +88,7 @@ public class Generate_Examples {
 			}
 		    }
 		} else if (scenario == 2) {     // Otherwise, scenario for the hypersphere.
-		    double magnitude = hyperSphereMagnitude(v);
+		    double magnitude = hyperSphereMagnitude(v, radius);
 		    // Check if within the hypersphere.
 		    if (magnitude > radius) {
 			for (int i = 0; i < v.length; i++) {
