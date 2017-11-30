@@ -216,7 +216,7 @@ public class SGD {
         // The output file. Try to create/open it and exit on failure.
 		PrintWriter outFile = null;
 		try {
-			outFile = new PrintWriter("output.txt", "UTF-8");
+			outFile = new PrintWriter("stats.txt", "UTF-8");
 		} catch (FileNotFoundException e) {
 			System.err.println("Output file does not exist and could not be created.");
 			System.exit(0);
@@ -323,6 +323,13 @@ public class SGD {
                 classStdDev = Math.sqrt(stdDev);
                 
                 double excessRisk = lossMean - lossMin;
+		    
+		        println(lossMean);
+		        println(lossStdDev);
+		        println(lossMin);
+	            println(excessRisk);
+                println(classMean);
+                println(classStdDev);
             } catch (IOException e) {
                 System.err.println("Error reading from: " + fileName);
             } finally {
