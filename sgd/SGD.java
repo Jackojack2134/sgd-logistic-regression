@@ -323,18 +323,18 @@ public class SGD {
                     classStdDev += Math.pow(results[j][1] - classMean, 2);
                 }
                 lossStdDev /= results.length - 1;
-                lossStdDev = Math.sqrt(stdDev);
+                lossStdDev = Math.sqrt(lossStdDev);
                 classStdDev /= results.length - 1;
-                classStdDev = Math.sqrt(stdDev);
+                classStdDev = Math.sqrt(classStdDev);
                 
                 double excessRisk = lossMean - lossMin;
 		    
-		        println(lossMean);
-		        println(lossStdDev);
-		        println(lossMin);
-	            println(excessRisk);
-                println(classMean);
-                println(classStdDev);
+                outFile.println(lossMean);
+                outFile.println(lossStdDev);
+                outFile.println(lossMin);
+                outFile.println(excessRisk);
+                outFile.println(classMean);
+                outFile.println(classStdDev);
             } catch (IOException e) {
                 System.err.println("Error reading from: " + fileName);
             } finally {
