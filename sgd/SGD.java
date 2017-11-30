@@ -236,8 +236,8 @@ public class SGD {
         int scenario;
         double l_rate = 0.02;
         
-        if (args.length != 3) {
-            System.err.println("Incorrect number of arguments. Enter the filename and number of samples.");
+        if (args.length != 4) {
+            System.err.println("Incorrect number of arguments. Enter the input file, the output file, number of samples, and the scenario number.");
             System.exit(0);
         }
         
