@@ -255,7 +255,7 @@ public class SGD {
             br = new BufferedReader(new FileReader(testFileName));
             String currentLine = br.readLine();
             int count = 0;
-            while (currentLine != null) {
+            while (currentLine != null && count < numTestExamples) {
                 String[] strArr = currentLine.split("\\s+");
                 for (int i = 0; i < strArr.length; i++) {
                     testData[count][i] = Double.parseDouble(strArr[i]);
