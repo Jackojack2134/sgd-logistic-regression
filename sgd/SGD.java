@@ -214,15 +214,15 @@ public class SGD {
     public static void main(String[] args) {
         //Do file I/O to get Sample Data
         // The output file. Try to create/open it and exit on failure.
-		PrintWriter outFile = null;
-		try {
-			outFile = new PrintWriter("stats.txt", "UTF-8");
-		} catch (FileNotFoundException e) {
-			System.err.println("Output file does not exist and could not be created.");
-			System.exit(0);
-		} catch (UnsupportedEncodingException e) {
-			System.err.println("Encoding type is unsupported.");
-			System.exit(0);
+	PrintWriter outFile = null;
+	try {
+		outFile = new PrintWriter("stats.txt", "UTF-8");
+	} catch (FileNotFoundException e) {
+		System.err.println("Output file does not exist and could not be created.");
+		System.exit(0);
+	} catch (UnsupportedEncodingException e) {
+		System.err.println("Encoding type is unsupported.");
+		System.exit(0);
         }
         
         // Dim-size is 6.
@@ -347,4 +347,5 @@ public class SGD {
             }
         outFile.close();
     }
+}
 }
