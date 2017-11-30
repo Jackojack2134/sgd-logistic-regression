@@ -62,13 +62,7 @@ public class SGD {
         mean /= losses.length;
         result[0] = mean;
         
-//         double stdDev = 0;
-//         for (int i = 0; i < losses.length; i++) {
-//             stdDev += Math.pow(losses[i] - mean, 2);
-//         }
-//         stdDev /= losses.length - 1;
-//         stdDev = Math.sqrt(stdDev);
-         double c_error = 1.0 - (1.0 * correct / sample.length);
+        double c_error = 1.0 - (1.0 * correct / sample.length);
         results[1] = c_error;
         return results;
     }
@@ -219,6 +213,18 @@ public class SGD {
     //TODO: Test with actual data
     public static void main(String[] args) {
         //Do file I/O to get Sample Data
+        // The output file. Try to create/open it and exit on failure.
+		PrintWriter outFile = null;
+		try {
+			outFile = new PrintWriter("output.txt", "UTF-8");
+		} catch (FileNotFoundException e) {
+			System.err.println("Output file does not exist and could not be created.");
+			System.exit(0);
+		} catch (UnsupportedEncodingException e) {
+			System.err.println("Encoding type is unsupported.");
+			System.exit(0);
+        }
+        
         // Dim-size is 6.
         int dim = 6;
         int numSamples;
@@ -237,13 +243,19 @@ public class SGD {
         BufferedReader br = null;
         FileReader fr = null;
         double[][] results = new double[30][2];
-        double[400][dim];
+        int numTestExamples = 400;
+        double[][] testData = new double[numTestExamples][dim];
         
         try {
             br = new BufferedReader(newFileReader(testFileName));
             String currentLine = br.readLine();
+            int count = 0;
             while (currentLine != null) {
-                
+                String[] strArr = currentLine.split("\\s+");
+                for (int i = 0; i < strArr.length; i++) {
+                    testData[count][i] = Double.parseDouble(strArr[i]);
+                }
+                count++;
             }
         catch (IOException e) {
             System.err.println("Error reading from " + testFileName);
@@ -284,6 +296,33 @@ public class SGD {
                         results[testNum] = testResult;
                     }
                 }
+                double lossMean = results[0][0];
+                double lossMin = results[0][0];
+                double classMean = results[0][1];
+                
+                for (int i = 1; i < results.length; i++) {
+                    lossMean += results[i][0];
+                    classMean += results[i][1];
+                    if (results[i][0] < lossMin) {
+                        lossMin = results[i][0];
+                    }
+                }
+                
+                lossMean /= results.length;
+                classMean /= results.length;
+                
+                double lossStdDev = 0;
+                double classStdDev = 0;
+                for (int i = 0; i < results.length; i++) {
+                    lossStdDev += Math.pow(results[i][0] - mean, 2);
+                    classStdDev += Math.pow(results[i][1] - mean, 2);
+                }
+                lossStdDev /= results.length - 1;
+                lossStdDev = Math.sqrt(stdDev);
+                classStdDev /= results.length - 1;
+                classStdDev = Math.sqrt(stdDev);
+                
+                double excessRisk = lossMean - lossMin;
             } catch (IOException e) {
                 System.err.println("Error reading from: " + fileName);
             } finally {
@@ -299,7 +338,6 @@ public class SGD {
                     System.err.println("Error while closing file.");
                 }
             }
-        
-        
+        outFile.close();
     }
 }
