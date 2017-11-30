@@ -52,8 +52,8 @@ public class SGD {
             if(losses[i] < min) {
                 min = losses[i];
             }
-            for(int j = 0; j < data.length; j++) {
-                data[j] = sample[i][j+1];
+            for(int j = 1; j < data.length; j++) {
+                data[j-1] = sample[i][j];
             }
             data[w.length - 1] = 1;
             if(sample[i][0]*dot(w,data) > 0) {
