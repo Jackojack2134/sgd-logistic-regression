@@ -1,3 +1,6 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException
 import java.lang.Math;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -40,10 +43,12 @@ public class SGD {
         double[] losses = new double[sample.length];
         double[] data = new double[w.length];
         int correct = 0;
-        losses[0] = logistic_loss(sample[0][0], w, sample[0]);
+        int label = (int) sample[0][0];
+        losses[0] = logistic_loss(label, w, sample[0]);
         double min = losses[0];
         for(int i = 1; i < sample.length; i++) {
-            losses[i] = logistic_loss(sample[i][0], w, sample[i]);
+            label = (int) sample[i][0];
+            losses[i] = logistic_loss(label, w, sample[i]);
             if(losses[i] < min) {
                 min = losses[i];
             }
@@ -60,7 +65,7 @@ public class SGD {
             mean += losses[i];
         }
         mean /= losses.length;
-        result[0] = mean;
+        results[0] = mean;
         
         double c_error = 1.0 - (1.0 * correct / sample.length);
         results[1] = c_error;
@@ -247,7 +252,7 @@ public class SGD {
         double[][] testData = new double[numTestExamples][dim];
         
         try {
-            br = new BufferedReader(newFileReader(testFileName));
+            br = new BufferedReader(new FileReader(testFileName));
             String currentLine = br.readLine();
             int count = 0;
             while (currentLine != null) {
@@ -300,11 +305,11 @@ public class SGD {
                 double lossMin = results[0][0];
                 double classMean = results[0][1];
                 
-                for (int i = 1; i < results.length; i++) {
-                    lossMean += results[i][0];
-                    classMean += results[i][1];
-                    if (results[i][0] < lossMin) {
-                        lossMin = results[i][0];
+                for (int j = 1; j < results.length; j++) {
+                    lossMean += results[j][0];
+                    classMean += results[j][1];
+                    if (results[j][0] < lossMin) {
+                        lossMin = results[j][0];
                     }
                 }
                 
@@ -313,9 +318,9 @@ public class SGD {
                 
                 double lossStdDev = 0;
                 double classStdDev = 0;
-                for (int i = 0; i < results.length; i++) {
-                    lossStdDev += Math.pow(results[i][0] - mean, 2);
-                    classStdDev += Math.pow(results[i][1] - mean, 2);
+                for (int j = 0; j < results.length; j++) {
+                    lossStdDev += Math.pow(results[j][0] - lossMean, 2);
+                    classStdDev += Math.pow(results[j][1] - classMean, 2);
                 }
                 lossStdDev /= results.length - 1;
                 lossStdDev = Math.sqrt(stdDev);
