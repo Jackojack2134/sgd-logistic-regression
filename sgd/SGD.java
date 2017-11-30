@@ -257,7 +257,7 @@ public class SGD {
                 }
                 count++;
             }
-        catch (IOException e) {
+	} catch (IOException e) {
             System.err.println("Error reading from " + testFileName);
             System.exit(0);
 	} finally {
