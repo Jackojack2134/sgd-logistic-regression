@@ -52,7 +52,7 @@ public class SGD {
             }
             data[w.length - 1] = 1;
             if(sample[i][0]*dot(w,data) > 0) {
-                correct++:
+                correct++;
             }
         }
         double mean = 0;
@@ -260,7 +260,7 @@ public class SGD {
         catch (IOException e) {
             System.err.println("Error reading from " + testFileName);
             System.exit(0);
-        finally {
+	} finally {
             try {
                     if (br != null) {
                         br.close();
